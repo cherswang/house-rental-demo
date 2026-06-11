@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房屋租赁信息展示</title>
+    
+    <!-- Pannellum 全景库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    
+    <!-- Lightbox2 图片画廊 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.4/dist/css/lightbox.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.4/dist/js/lightbox.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">
+                <i class="fas fa-home"></i>
+                房屋租赁信息展示
+            </h1>
+            <ul class="nav-menu">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#panorama">全景展示</a></li>
+                <li><a href="#gallery">图片画廊</a></li>
+                <li><a href="#info">房屋信息</a></li>
+                <li><a href="#contact">联系方式</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 首页横幅 -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>优质房源，舒适生活</h2>
+            <p>为您提供全方位的高清全景看房体验</p>
+            <a href="#panorama" class="btn btn-primary">
+                <i class="fas fa-vr-cardboard"></i> 开始全景看房
+            </a>
+        </div>
+    </section>
+
+    <!-- 全景展示区域 -->
+    <section id="panorama" class="panorama-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-cube"></i>
+                360度全景展示
+            </h2>
+            <p class="section-subtitle">拖动鼠标或滑动屏幕，感受沉浸式看房体验</p>
+            
+            <div class="panorama-selector">
+                <button class="panorama-btn active" data-panorama="living-room">
+                    <i class="fas fa-couch"></i> 客厅
+                </button>
+                <button class="panorama-btn" data-panorama="bedroom">
+                    <i class="fas fa-bed"></i> 卧室
+                </button>
+                <button class="panorama-btn" data-panorama="kitchen">
+                    <i class="fas fa-utensils"></i> 厨房
+                </button>
+                <button class="panorama-btn" data-panorama="bathroom">
+                    <i class="fas fa-bath"></i> 卫生间
+                </button>
+            </div>
+            
+            <div class="panorama-container">
+                <div id="panorama-viewer"></div>
+                <div class="panorama-controls">
+                    <button id="fullscreen-btn" class="control-btn" title="全屏">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button id="zoom-in-btn" class="control-btn" title="放大">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button id="zoom-out-btn" class="control-btn" title="缩小">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <button id="autorotate-btn" class="control-btn" title="自动旋转">
+                        <i class="fas fa-sync"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="panorama-placeholder" id="panorama-placeholder">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>加载全景图中...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 图片画廊 -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-images"></i>
+                精美图片展示
+            </h2>
+            <p class="section-subtitle">点击图片查看高清大图</p>
+            
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="living-room">客厅</button>
+                <button class="filter-btn" data-filter="dining-room">餐厅</button>
+                <button class="filter-btn" data-filter="bedroom">卧室</button>
+                <button class="filter-btn" data-filter="kitchen">厨房</button>
+                <button class="filter-btn" data-filter="bathroom">卫生间</button>
+                <button class="filter-btn" data-filter="closet">衣帽间</button>
+                <button class="filter-btn" data-filter="balcony">阳台</button>
+            </div>
+            
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- 图片将通过JavaScript动态添加 -->
+            </div>
+            
+            <div class="gallery-placeholder" id="gallery-placeholder">
+                <i class="fas fa-images"></i>
+                <p>等待上传图片资源</p>
+                <small>请将图片放入 assets/images 目录</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- 房屋信息 -->
+    <section id="info" class="info-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-info-circle"></i>
+                房屋基本信息
+            </h2>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>位置信息</h3>
+                    <p id="info-location">示例地址：北京市朝阳区某某路123号</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-vector-square"></i>
+                    </div>
+                    <h3>房屋面积</h3>
+                    <p id="info-area">90平方米</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                    <h3>户型</h3>
+                    <p id="info-layout">2室1厅1卫</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3>楼层</h3>
+                    <p id="info-floor">第15层 / 共30层</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-won-sign"></i>
+                    </div>
+                    <h3>租金</h3>
+                    <p id="info-rent">¥8,000/月</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>可入住时间</h3>
+                    <p id="info-date">随时可入住</p>
+                </div>
+            </div>
+            
+            <div class="info-details">
+                <h3><i class="fas fa-list-ul"></i> 房屋配置</h3>
+                <ul class="amenities-list" id="amenities-list">
+                    <li><i class="fas fa-check"></i> 3个卧室（主卧+2个次卧）</li>
+                    <li><i class="fas fa-check"></i> 客厅（与餐厅、阳台连厅）</li>
+                    <li><i class="fas fa-check"></i> 独立餐厅</li>
+                    <li><i class="fas fa-check"></i> 开放式厨房</li>
+                    <li><i class="fas fa-check"></i> 卫生间</li>
+                    <li><i class="fas fa-check"></i> 衣帽间</li>
+                    <li><i class="fas fa-check"></i> 大落地窗阳台</li>
+                    <li><i class="fas fa-check"></i> 空调</li>
+                    <li><i class="fas fa-check"></i> 冰箱</li>
+                    <li><i class="fas fa-check"></i> 洗衣机</li>
+                    <li><i class="fas fa-check"></i> 热水器</li>
+                    <li><i class="fas fa-check"></i> 床</li>
+                    <li><i class="fas fa-check"></i> 衣柜</li>
+                    <li><i class="fas fa-check"></i> 沙发</li>
+                    <li><i class="fas fa-check"></i> 餐桌椅</li>
+                    <li><i class="fas fa-check"></i> 燃气灶</li>
+                    <li><i class="fas fa-check"></i> 抽油烟机</li>
+                    <li><i class="fas fa-check"></i> 网络</li>
+                    <li><i class="fas fa-check"></i> 电视</li>
+                </ul>
+            </div>
+            
+            <div class="info-description">
+                <h3><i class="fas fa-file-alt"></i> 房屋描述</h3>
+                <p id="info-description">
+                    这是一套位于市中心的优质房源，交通便利，周边配套设施齐全。房屋采光良好，装修简洁现代，家电家具齐全，拎包入住。小区环境优美，24小时安保，电梯直达，停车方便。欢迎随时预约看房！
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-phone-alt"></i>
+                联系方式
+            </h2>
+            
+            <div class="contact-cards">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>联系人</h3>
+                    <p id="contact-name">张先生</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3>联系电话</h3>
+                    <p id="contact-phone">138-0013-8000</p>
+                    <button class="btn btn-sm" onclick="window.location.href='tel:138-0013-8000'">
+                        <i class="fas fa-phone-alt"></i> 点击拨打
+                    </button>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>电子邮箱</h3>
+                    <p id="contact-email">zhangsan@example.com</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>看房时间</h3>
+                    <p id="contact-hours">周一至周日 9:00-18:00</p>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <h3><i class="fas fa-paper-plane"></i> 在线预约看房</h3>
+                <form id="appointment-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">姓名 *</label>
+                            <input type="text" id="name" name="name" required placeholder="请输入您的姓名">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">联系电话 *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="请输入您的电话号码">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">电子邮箱</label>
+                            <input type="email" id="email" name="email" placeholder="请输入您的邮箱（可选）">
+                        </div>
+                        <div class="form-group">
+                            <label for="date">预约看房日期 *</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">留言</label>
+                        <textarea id="message" name="message" rows="4" placeholder="请输入您的留言或特殊要求（可选）"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane"></i> 提交预约
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-home"></i> 关于我们</h3>
+                    <p>我们致力于为您提供最优质的房屋租赁信息展示服务，让看房变得更加便捷和直观。</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="#home">首页</a></li>
+                        <li><a href="#panorama">全景展示</a></li>
+                        <li><a href="#gallery">图片画廊</a></li>
+                        <li><a href="#info">房屋信息</a></li>
+                        <li><a href="#contact">联系方式</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p><i class="fas fa-phone"></i> 138-0013-8000</p>
+                    <p><i class="fas fa-envelope"></i> zhangsan@example.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 北京市朝阳区某某路123号</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 房屋租赁信息展示. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" title="微信"><i class="fab fa-weixin"></i></a>
+                    <a href="#" title="微博"><i class="fab fa-weibo"></i></a>
+                    <a href="#" title="QQ"><i class="fab fa-qq"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="back-to-top" title="返回顶部">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- 灯箱 -->
+    <div id="lightbox" class="lightbox">
+        <button id="lightbox-close" class="lightbox-close"><i class="fas fa-times"></i></button>
+        <button id="lightbox-prev" class="lightbox-nav lightbox-prev"><i class="fas fa-chevron-left"></i></button>
+        <button id="lightbox-next" class="lightbox-nav lightbox-next"><i class="fas fa-chevron-right"></i></button>
+        <img src="" alt="" class="lightbox-image">
+        <div class="lightbox-caption">
+            <h4 class="lightbox-title"></h4>
+            <p class="lightbox-desc"></p>
+        </div>
+    </div>
+
+    <!-- 成功模态框 -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-check-circle"></i>
+            <h3>预约成功！</h3>
+            <p>我们会尽快与您联系安排看房时间。</p>
+        </div>
+    </div>
+
+    <!-- 提示框 -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

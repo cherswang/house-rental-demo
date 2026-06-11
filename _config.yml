@@ -1,0 +1,9 @@
+# GitHub Pages 部署配置文件
+
+# 此文件告诉GitHub这是一个静态网站项目
+# 部署时GitHub会自动使用Jekyll构建
+
+title: 房屋租赁信息展示
+description: 360度全景看房体验
+baseurl: ""
+url: "https://cherswang.github.io/house-rental-demo"
