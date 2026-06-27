@@ -369,28 +369,116 @@ let currentLightboxIndex = 0;
 
 // ==================== 表单提交功能 ====================
 
-function submitForm() {
+// API 基础 URL
+const API_BASE_URL = window.location.origin;
+
+// 显示提示消息
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    const icon = toast.querySelector('i');
+    
+    if (!toast || !toastMessage) return;
+    
+    // 设置图标和样式
+    if (type === 'success') {
+        icon.className = 'fas fa-check-circle';
+        toast.style.background = '#10b981';
+    } else if (type === 'error') {
+        icon.className = 'fas fa-times-circle';
+        toast.style.background = '#ef4444';
+    } else if (type === 'warning') {
+        icon.className = 'fas fa-exclamation-circle';
+        toast.style.background = '#f59e0b';
+    }
+    
+    toastMessage.textContent = message;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
+
+// 提交表单
+async function submitForm() {
     const form = document.getElementById('appointment-form');
     if (!form) return;
-    const formData = new FormData(form);
     
+    const formData = new FormData(form);
     const data = {
         name: formData.get('name'),
         phone: formData.get('phone'),
-        date: formData.get('date'),
-        message: formData.get('message')
+        email: formData.get('email') || null,
+        appointment_date: formData.get('date'),
+        message: formData.get('message') || null
     };
     
-    console.log('预约信息:', data);
+    // 验证必填字段
+    if (!data.name || !data.phone || !data.appointment_date) {
+        showToast('请填写所有必填项', 'error');
+        return;
+    }
     
-    const successModal = document.getElementById('success-modal');
-    successModal.classList.add('visible');
+    // 验证手机号格式
+    const phoneRegex = /^1[3-9]\d{9}$/;
+    if (!phoneRegex.test(data.phone)) {
+        showToast('请输入有效的手机号码', 'error');
+        return;
+    }
     
-    form.reset();
+    // 验证邮箱格式（如果提供）
+    if (data.email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(data.email)) {
+            showToast('请输入有效的邮箱地址', 'error');
+            return;
+        }
+    }
     
-    setTimeout(() => {
-        successModal.classList.remove('visible');
-    }, 3000);
+    // 显示加载状态
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/appointments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+            // 显示成功模态框
+            const successModal = document.getElementById('success-modal');
+            successModal.classList.add('visible');
+            
+            // 重置表单
+            form.reset();
+            
+            // 3秒后关闭模态框
+            setTimeout(() => {
+                successModal.classList.remove('visible');
+            }, 3000);
+            
+            showToast('预约成功！我们会尽快与您联系', 'success');
+        } else {
+            // 显示错误信息
+            showToast(result.message || '提交失败，请稍后重试', 'error');
+        }
+    } catch (error) {
+        console.error('提交表单失败:', error);
+        showToast('网络错误，请检查网络连接后重试', 'error');
+    } finally {
+        // 恢复按钮状态
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    }
 }
 
 // ==================== 初始化 ====================
