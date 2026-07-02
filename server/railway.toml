@@ -1,9 +1,5 @@
 [build]
-builder = "npm"
 buildCommand = "npm install"
-
-[start]
-command = "npm start"
 
 [deploy]
 startCommand = "npm start"
