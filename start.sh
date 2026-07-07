@@ -11,17 +11,17 @@ echo ""
 if command -v python3 &> /dev/null; then
     echo "✓ 使用 Python3 启动服务器"
     echo ""
-    echo "请在浏览器中打开: http://localhost:8000"
+    echo "请在浏览器中打开: http://localhost:3000"
     echo "按 Ctrl+C 停止服务器"
     echo ""
-    python3 -m http.server 8000
+    python3 -m http.server 3000
 elif command -v python &> /dev/null; then
     echo "✓ 使用 Python 启动服务器"
     echo ""
-    echo "请在浏览器中打开: http://localhost:8000"
+    echo "请在浏览器中打开: http://localhost:3000"
     echo "按 Ctrl+C 停止服务器"
     echo ""
-    python -m http.server 8000
+    python -m http.server 3000
 else
     echo "✗ 未找到 Python"
     echo ""
